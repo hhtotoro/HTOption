@@ -1,0 +1,195 @@
+<html lang="en">
+<head>
+    <title>Arithmetic mean basket call/put options</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style>
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {height: 806px}
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* On small screens, set height to 'auto' for the grid */
+        @media screen and (max-width: 767px) {
+            .row.content {height: auto;}
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default visible-xs text">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Group 12</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/am_bo">Arithmetic Basket</a></li>
+                    <li><a href="/eu_bs">European Option</a></li>
+                    <li><a href="/eu_goa">Geometric Asian</a></li>
+                    <li><a href="/eu_gob">Geometric Basket</a></li>
+                    <li><a href="/eu_bt">American Option</a></li>
+                    <li> <a href="/aa_price">Arithmetic Asian</a></li>
+                    <li> <a href="/im_vol">Implied Volatility</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row content">
+            <div class="col-sm-3 sidenav hidden-xs">
+                <h2>Group 12</h2>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="/am_bo">Arithmetic Basket</a></li>
+                    <li><a href="/eu_bs">European Option</a></li>
+                    <li><a href="/eu_goa">Geometric Asian</a></li>
+                    <li><a href="/eu_gob">Geometric Basket</a></li>
+                    <li><a href="/eu_bt">American Option</a></li>
+                    <li> <a href="/aa_price">Arithmetic Asian</a></li>
+                    <li> <a href="/im_vol">Implied Volatility</a></li>
+                </ul>
+                <br/>
+            </div>
+            <div class="col-sm-9" style="background-color:#f1f1f1">
+                <div class="well" style="background-color:#f1f1f1; border-style:none">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Arithmetic mean basket call/put option calculator
+                        </div>
+                        <div class="panel-body">
+                            Use comma to separate different stock prices, volatilities and correlations of different
+                            assets<br />
+                            Rules for inputting correlations: suppose there are n options, the first correlation is
+                            between option 1 and 2, the second is between 1 and 3 ... <br/>
+                            Example for 3 options:<br />
+                            Stock price = 100, 100, 100<br />
+                            Volatility = 0.3, 0.3, 0.3<br />
+                            corr = 0.5, 0.2, 0.4<br />
+                            <form class="row" role="form" action="am_bo" method="POST">
+                                <div class="col-xs-6 form-group">
+                                    <label for="stock">Stock Price</label>
+                                    <input class="form-control" type="text" name="stock" id="stock"
+                                           data-bind="value:replyNumber" value="$stock"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label>Volatility</label>
+                                    <input class="form-control" type="text" name="vol" id="vol" value="$vol"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label>Strike Price</label>
+                                    <input class="form-control" type="text" name="strike" id="strike" value="$strike"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label>Maturity time/years</label>
+                                    <input class="form-control" type="text" name="time" id="time" value="$time"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label>Risk free rate</label>
+                                    <input class="form-control" type="text" name="rate" id="rate" value="$rate"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label>Correlation</label>
+                                    <input class="form-control" type="text" name="corr" id="corr" value="$corr"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label>Path Number</label>
+                                    <input class="form-control" type="text" name="num" id="num" value="$num"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label class="col-xs-12">Option type</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="radio col-xs-12">
+                                            <label>
+                                                $if type == "Call":
+                                                    <input type="radio" name="type" id="Option1" value="Put"/>
+                                                $else:
+                                                    <input type="radio" name="type" id="Option1" value="Put" checked/>
+                                                Put option
+                                            </label>
+                                        </div>
+
+                                        <div class="radio col-xs-12">
+                                            <label>
+                                                $if type != "Call":
+                                                    <input type="radio" name="type" id="Option2" value="Call"/>
+                                                $else:
+                                                    <input type="radio" name="type" id="Option2" value="Call" checked/>
+                                                Call option
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label class="col-xs-12">Control Variate Method</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="radio col-xs-12">
+                                            <label>
+                                                $if cv == "GBO":
+                                                    <input type="radio" name="cv_type" id="NoCV" value="NoCV"/>
+                                                $else:
+                                                    <input type="radio" name="cv_type" id="NoCV" value="NoCV" checked/>
+                                                No Control Variate
+                                            </label>
+                                        </div>
+
+                                        <div class="radio col-xs-12">
+                                            <label>
+                                                $if cv == "GBO":
+                                                    <input type="radio" name="cv_type" id="GBO" value="GBO" checked/>
+                                                $else:
+                                                    <input type="radio" name="cv_type" id="GBO" value="GBO"/>
+                                                Geometric Basket Option
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label for="option_price">Option Price:</label>
+                                    <input class="form-control" type="text" readonly id="option_price" value="$price"/>
+                                </div>
+
+                                <div class="col-xs-6 form-group">
+                                    <label for="interval">Confidence Interval:</label>
+                                    <input class="form-control" type="text" readonly id="interval" value="$interval"/>
+                                </div>
+
+                                <div class="col-xs-12 center-block">
+                                    <button type="submit" class="btn btn-lg btn-primary center-block" value="Calculate">
+                                        Calculate
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+		    </div>
+	    </div>
+    </div>
+</body>
+</html>
