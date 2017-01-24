@@ -61,16 +61,17 @@ class IndexHandler(BaseHandler):
         t = 1
         for item in res:
             tempItem = {}
-            tempItem["id"] = t
-            tempItem["name"] = item[0]
-            try:
-                tempItem["signup_date"] = item[1].strftime("%Y-%m-%d %H:%M:%S")
-            except:
-                tempItem["signup_date"] = ''
-            t += 1
+            # tempItem["id"] = t
+            # tempItem["name"] = item[0]
+            # try:
+            #     tempItem["signup_date"] = item[1].strftime("%Y-%m-%d %H:%M:%S")
+            # except:
+            #     tempItem["signup_date"] = ''
+            # t += 1
             content.append(tempItem)
         result["total"] = 1000
         result["rows"] = content
         result["status"] = "true"
         result["code"] = 200
         self.write(json_encode(result))
+        self.render("./templates/poem.html")
