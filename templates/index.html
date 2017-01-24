@@ -26,37 +26,7 @@
                 .row.content {height: auto;}
             }
         </style>
-        <script>
-            function initClientInfo() {
-            $('#client_info_grid').datagrid({
-                border: false,
-                fit: true,
-                singleSelect: true,
-                method: 'get',
-                pagination: true,
-                striped: true,
-                pageSize: 20,
-                onBeforeLoad: function() {
-                },
-                columns: [
-                    [{
-                        field: 'name',
-                        title: 't_name',
-                        width: '8%',
-                        align: 'center'
-                    }, {
-                        field: 'signup_date',
-                        title: 't_signup_date',
-                        width: '14%',
-                        align: 'center'
-                    }
-                    ]
-                ],
-                onLoadSuccess: function(data) {
-                }
-            });
-        }
-        </script>
+
 
     </head>
     <body>
